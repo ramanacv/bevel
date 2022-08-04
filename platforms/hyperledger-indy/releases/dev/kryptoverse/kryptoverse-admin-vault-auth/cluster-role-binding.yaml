@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kryptoverse-admin-vault-auth-role-binding
+  namespace: kryptoverse-ns
+  labels:
+    organization: kryptoverse
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: kryptoverse-admin-vault-auth
+  namespace: kryptoverse-ns
