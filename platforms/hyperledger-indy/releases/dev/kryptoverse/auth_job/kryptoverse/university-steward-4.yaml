@@ -1,0 +1,35 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: kryptoverse-university-steward-4-auth-job
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: kryptoverse-ns
+spec:
+  releaseName: kryptoverse-university-steward-4-auth-job
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-auth-job
+    git: git@github.com:ramanacv/bevel.git
+    ref: main
+  values:
+    metadata:
+      name: kryptoverse-university-steward-4-auth-job
+      namespace: kryptoverse-ns
+    network:
+      name: bevel
+      kubernetes_url: https://CE200D81A6644C0FFDAD9A20772CC1CC.gr7.ap-south-1.eks.amazonaws.com
+    image:
+      name: kryptoverse
+      repository: alpine:3.9.4
+    vault:
+      address: http://3.110.244.81:8202/
+      identity: university-steward-4
+      admin_auth_path: kubernetes-kryptoverse-admin-auth
+      policy: kryptoverse-university-steward-4-ro
+      policy_content: path \"/kryptoverse/data/stewards/university-steward-4/*\" { capabilities = [ \"read\", \"list\" ] }
+      auth_path: kubernetes-kryptoverse-university-steward-4-auth
+    account:
+      admin_service: kryptoverse-admin-vault-auth
+      admin_role: rw
+      service: kryptoverse-university-steward-4-vault-auth
+      role: ro
